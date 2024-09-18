@@ -3,28 +3,23 @@ const createButton = document.querySelector("button[data-create]");
 const destroyButton = document.querySelector("button[data-destroy]");
 const boxesDiv = document.querySelector("div#boxes");
 
-function createBoxes() {
-  const inputValues = inputValue.value.trim();
-  const rectangles = parseInt(inputValues, 10);
+function createBoxes(amount) {
+  const fragment = document.createDocumentFragment();
 
-  if (rectangles >= 1 && rectangles <= 100) {
-    const fragment = document.createDocumentFragment();
+  for (let i = 0; i < amount; i++) {
+    const newRect = document.createElement("div");
+    newRect.setAttribute("class", "rectangle");
 
-    for (let i = 0; i < rectangles; i++) {
-      const newRect = document.createElement("div");
-      newRect.setAttribute("class", "rectangle");
+    const size = 30 + i * 10; 
+    newRect.style.width = `${size}px`;
+    newRect.style.height = `${size}px`;
+    newRect.style.backgroundColor = getRandomHexColor();
 
-      const size = 30 + i * 10;
-      newRect.style.width = `${size}px`;
-      newRect.style.height = `${size}px`;
-      newRect.style.backgroundColor = getRandomHexColor();
-
-      fragment.appendChild(newRect);
-    }
-
-    boxesDiv.innerHTML = ""; 
-    boxesDiv.appendChild(fragment); 
+    fragment.appendChild(newRect); 
   }
+
+  boxesDiv.innerHTML = ""; 
+  boxesDiv.appendChild(fragment); 
 }
 
 function destroyBoxes() {
@@ -39,5 +34,14 @@ function getRandomHexColor() {
     .padStart(6, 0)}`;
 }
 
-createButton.addEventListener("click", createBoxes);
+createButton.addEventListener("click", () => {
+  const inputValues = inputValue.value.trim();
+  const rectangles = parseInt(inputValues, 10);
+
+  if (rectangles >= 1 && rectangles <= 100) {
+    createBoxes(rectangles);
+    inputValue.value = ""; 
+  } 
+});
+
 destroyBoxes();
