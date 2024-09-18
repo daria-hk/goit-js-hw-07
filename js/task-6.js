@@ -8,38 +8,28 @@ function createBoxes() {
   const rectangles = parseInt(inputValues, 10);
 
   if (rectangles >= 1 && rectangles <= 100) {
-    return rectangles;
-  }
-}
+    const fragment = document.createDocumentFragment();
 
-function addRectangles() {
-  createButton.addEventListener("click", () => {
-    const cratedRectangles = createBoxes();
+    for (let i = 0; i < rectangles; i++) {
+      const newRect = document.createElement("div");
+      newRect.setAttribute("class", "rectangle");
 
-    if (cratedRectangles !== null) {
-      boxesDiv.innerHTML = "";
+      const size = 30 + i * 10;
+      newRect.style.width = `${size}px`;
+      newRect.style.height = `${size}px`;
+      newRect.style.backgroundColor = getRandomHexColor();
 
-      for (let i = 0; i < cratedRectangles; i++) {
-        const newRect = document.createElement("div");
-        newRect.setAttribute("class", "rectangle");
-
-        const size = 30 + i * 10;
-        newRect.style.width = `${size}px`;
-        newRect.style.height = `${size}px`;
-        newRect.style.backgroundColor = getRandomHexColor();
-        boxesDiv.insertAdjacentElement("beforeend", newRect);
-      }
-
-      inputValue.value = "";
+      fragment.appendChild(newRect);
     }
-  });
+
+    boxesDiv.innerHTML = ""; 
+    boxesDiv.appendChild(fragment); 
+  }
 }
 
 function destroyBoxes() {
   destroyButton.addEventListener("click", () => {
-    const rectanglesInBox = document.querySelectorAll(".rectangle");
-
-    rectanglesInBox.forEach((rectangle) => rectangle.remove());
+    boxesDiv.innerHTML = ""; 
   });
 }
 
@@ -49,5 +39,5 @@ function getRandomHexColor() {
     .padStart(6, 0)}`;
 }
 
-addRectangles();
+createButton.addEventListener("click", createBoxes);
 destroyBoxes();
